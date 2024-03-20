@@ -13,8 +13,8 @@ export class ProductsService {
   private JWT_TOKEN = this.cookie.get('USER_INFO');
   private httpOptions = {
     headers: new HttpHeaders({
-      'Content-Type': 'aplication/json',
-      Autorization: `Bearer ${this.JWT_TOKEN}`,
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${this.JWT_TOKEN}`,
     }),
   }
 

@@ -6,7 +6,7 @@ import { GetAllProductsResponse } from 'src/app/models/interfaces/products/respo
 import { enviroment } from 'src/enviroments/enviroment';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ProductsService {
   private API_URL = enviroment.API_URL;
@@ -18,14 +18,14 @@ export class ProductsService {
     }),
   };
 
-  constructor(private http: HttpClient, private cookie: CookieService) { }
+  constructor(private http: HttpClient, private cookie: CookieService) {}
 
   getAllProducts(): Observable<Array<GetAllProductsResponse>> {
-    return this.http.get<Array<GetAllProductsResponse>> (
-      `${this.API_URL}/products`,
-      this.httpOptions,
-    ).pipe(
-      map((product) => product.filter((data => data?.amount > 0)))
-    )
+    return this.http
+      .get<Array<GetAllProductsResponse>>(
+        `${this.API_URL}/products`,
+        this.httpOptions
+      )
+      .pipe(map((product) => product.filter((data) => data?.amount > 0)));
   }
 }

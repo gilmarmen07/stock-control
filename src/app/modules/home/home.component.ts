@@ -1,9 +1,10 @@
 import { Token } from '@angular/compiler';
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { CookieService } from 'ngx-cookie-service';
 import { MessageService } from 'primeng/api';
+import { Subject, takeUntil } from 'rxjs';
 import { SignupUserRequest } from 'src/app/models/interfaces/user/SignupUserRequest';
 import { AuthRequest } from 'src/app/models/interfaces/user/auth/AuthRequest';
 import { UserService } from 'src/app/services/user/user.service';
@@ -13,7 +14,8 @@ import { UserService } from 'src/app/services/user/user.service';
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss']
 })
-export class HomeComponent {
+export class HomeComponent implements OnDestroy {
+  private destroy$ = new Subject<void>();
   loginCard = true;
 
   loginForm = this.formBuilder.group({
@@ -32,6 +34,7 @@ export class HomeComponent {
   onSubmitLoginForm(): void {
     if(this.loginForm.value && this.loginForm.valid) {
       this.userServicer.authUser(this.loginForm.value as AuthRequest)
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (response) => {
           this.cookieService.set('USER_INFO', response?.token);
@@ -60,6 +63,7 @@ export class HomeComponent {
   onSubmitSignupForm(): void {
     if(this.sigupForm.value && this.sigupForm.valid) {
       this.userServicer.signupUser(this.sigupForm.value as SignupUserRequest)
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (response) => {
           if(response) {
@@ -84,5 +88,10 @@ export class HomeComponent {
       });
 
     }
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

@@ -9,7 +9,7 @@ export class ProductsDataTransferService {
   public productsDataEmitter$ = new BehaviorSubject<Array<GetAllProductsResponse> | null>(null);
   public productsDatas: Array<GetAllProductsResponse> = [];
 
-  setDatasProducts(products: Array<GetAllProductsResponse>): void {
+  setProductsDatas(products: Array<GetAllProductsResponse>): void {
     if(products) {
       this.productsDataEmitter$.next(products);
       this.getProductsDatas();

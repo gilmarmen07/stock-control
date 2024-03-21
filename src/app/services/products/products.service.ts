@@ -16,7 +16,7 @@ export class ProductsService {
       'Content-Type': 'application/json',
       Authorization: `Bearer ${this.JWT_TOKEN}`,
     }),
-  }
+  };
 
   constructor(private http: HttpClient, private cookie: CookieService) { }
 
